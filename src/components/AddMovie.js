@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 
 import classes from "./AddMovie.module.css";
 
@@ -7,15 +7,29 @@ function AddMovie(props) {
   const openingTextRef = useRef("");
   const releaseDateRef = useRef("");
 
+  useEffect(() => {
+    titleRef.current.focus();
+  }, []);
+
   function submitHandler(event) {
     event.preventDefault();
 
     // could add validation here...
+    if (!titleRef.current.value.trim()) {
+      titleRef.current.focus();
+      return;
+    } else if (!openingTextRef.current.value.trim()) {
+      openingTextRef.current.focus();
+      return;
+    } else if (!releaseDateRef.current.value.trim()) {
+      releaseDateRef.current.focus();
+      return;
+    }
 
     const movie = {
-      title: titleRef.current.value,
-      openingText: openingTextRef.current.value,
-      releaseDate: releaseDateRef.current.value,
+      title: titleRef.current.value.trim(),
+      openingText: openingTextRef.current.value.trim(),
+      releaseDate: releaseDateRef.current.value.trim(),
     };
 
     props.onAddMovie(movie);
